@@ -1,6 +1,6 @@
 name: PromethiaLink
 main: net.promethiamc.link.PromethiaLink
-version: 0.1 DEV
+version: 0.1.1 DEV
 commands:
   plink:
     description: The main command for accessing LinkTrain features

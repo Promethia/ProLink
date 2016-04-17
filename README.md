@@ -38,8 +38,8 @@ The following actions are currently available:
 
 #### Latest build:
 
-[0.1 DEV](http://link.linksoft.io/prolink-latest.jar) - initial build
+[0.1.1 DEV](http://link.linksoft.io/prolink-latest.jar) - locomotive train control
 
 #### Previous builds:
 
-I've just started! Give me a break...
+[0.1 DEV](http://link.linksoft.io/prolink-0.1-dev.jar) - initial build
