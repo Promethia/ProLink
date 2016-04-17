@@ -1,5 +1,7 @@
 package net.promethiamc.link.command;
 
+import java.util.Iterator;
+
 import net.promethiamc.link.PromethiaLink;
 import net.promethiamc.link.entity.Train;
 
@@ -54,7 +56,8 @@ public class CommandMain implements CommandExecutor {
   private void handleRemoveAllCommand(CommandSender sender) {
     int removedTrains = 0, removedCarts = 0;
 
-    for (Train train : PromethiaLink.getTrains()) {
+    for (Iterator<Train> it = PromethiaLink.getTrains().iterator(); it.hasNext();) {
+      Train train = it.next();
       removedTrains++;
       removedCarts += train.getSize();
 

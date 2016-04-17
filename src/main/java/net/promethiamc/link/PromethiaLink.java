@@ -1,6 +1,7 @@
 package net.promethiamc.link;
 
-import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import net.promethiamc.link.command.CommandMain;
 import net.promethiamc.link.entity.Train;
@@ -15,10 +16,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class PromethiaLink extends JavaPlugin {
 
-  private static ArrayList<Train> trains = new ArrayList<Train>();
+  private static CopyOnWriteArrayList<Train> trains = new CopyOnWriteArrayList<Train>();
   private static World world;
 
-  public static ArrayList<Train> getTrains() {
+  public static CopyOnWriteArrayList<Train> getTrains() {
     return trains;
   }
 
@@ -79,19 +80,18 @@ public class PromethiaLink extends JavaPlugin {
 
     world = this.getServer().getWorld("Summer Forest");
 
-    // Use a Bukkit Schedular to execute our train tick function on every 10 server ticks
+    // Use a Bukkit Schedular to execute our train tick function on every 5 server ticks
     getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
       public void run() {
         tick();
       }
-    }, 10, 10);
+    }, 1, 1);
   }
 
   public void onDisable() {
     // Remove trains when plugin is disabled (usually on server shutdown)
-    for (Train train : trains) {
-      train.removeCarts();
-    }
+    for (Iterator<Train> it = trains.iterator(); it.hasNext();)
+      it.next().removeCarts();
   }
 
 }

@@ -18,11 +18,11 @@ public class Train {
   public static final byte DIRECTION_W = 0x03;
 
   private int ID;
-  private byte direction;
+  private short direction;
   private String name;
 
   private HashMap<Integer, TrainCart> carts = new HashMap<Integer, TrainCart>();
-  private TrainCart locomotive;
+  private TrainLocomotive locomotive;
 
   public Train(int ID, String name, int carts, Location location, World world, byte direction) {
     this.ID = ID;
@@ -30,18 +30,15 @@ public class Train {
     this.name = name;
 
     // The locomotive will pull the rest of the train (obviously...). To simulate something with power, use a furnace cart for now
-    this.locomotive = new TrainCart((Minecart) world.spawnEntity(location, EntityType.MINECART_FURNACE), 0, direction);
+    this.locomotive = new TrainLocomotive(this, (Minecart) world.spawnEntity(location, EntityType.MINECART_FURNACE), direction);
 
     // Create the rest of our train
-    for (int i = 1; i < carts; i++)
+    for (int i = 0; i < carts; i++)
       addCart();
   }
 
   public void tick() {
     direction = locomotive.tick();
-
-    for (Entry<Integer, TrainCart> cart : carts.entrySet())
-      cart.getValue().tick();
   }
 
   public boolean containsCard(Minecart cart) {
@@ -65,7 +62,7 @@ public class Train {
     Block block = location.getWorld().getBlockAt(location.getBlockX() + xOffset, location.getBlockY(), location.getBlockZ() + zOffset);
 
     if (block.getType().equals(Material.RAILS) || block.getType().equals(Material.POWERED_RAIL) || block.getType().equals(Material.DETECTOR_RAIL)) {
-      TrainCart cart = new TrainCart((Minecart) locomotive.getVehicle().getWorld().spawnEntity(blockLocation, EntityType.MINECART), carts.size() + 1, direction);
+      TrainCart cart = new TrainCart(this, (Minecart) locomotive.getVehicle().getWorld().spawnEntity(blockLocation, EntityType.MINECART), carts.size() + 1, direction);
       carts.put(cart.getVehicle().getEntityId(), cart);
 
       return;
@@ -79,11 +76,15 @@ public class Train {
     locomotive.getVehicle().remove();
   }
 
+  public HashMap<Integer, TrainCart> getCarts() {
+    return carts;
+  }
+
   public int getID() {
     return ID;
   }
 
-  public byte getDirection() {
+  public short getDirection() {
     return direction;
   }
 
@@ -95,7 +96,7 @@ public class Train {
     return name;
   }
 
-  public TrainCart getLocomotive() {
+  public TrainLocomotive getLocomotive() {
     return locomotive;
   }
 

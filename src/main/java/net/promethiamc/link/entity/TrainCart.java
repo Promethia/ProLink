@@ -6,26 +6,30 @@ import org.bukkit.util.Vector;
 
 public class TrainCart {
 
-  private Minecart cart;
-  private Vector currentVelocity = new Vector(), lastVelocity = new Vector();
-  private Location oldLocation;
+  protected Minecart cart;
+  protected Train train;
+  protected Vector currentVelocity = new Vector(), lastVelocity = new Vector();
+  protected double velocity;
+  protected Location oldLocation;
 
-  private byte direction;
+  protected short direction;
   private int trainPosition;
   private boolean occupied;
 
-  public TrainCart(Minecart cart, int trainPosition, byte direction) {
+  public TrainCart(Train train, Minecart cart, int trainPosition, short direction) {
+    this.train = train;
     this.cart = cart;
     this.trainPosition = trainPosition;
     this.direction = direction;
 
     this.cart.setInvulnerable(true);
+    this.cart.setMaxSpeed(2.0D);
+    this.cart.setSlowWhenEmpty(false);
 
     this.updateOldLocation();
   }
 
-  public byte tick() {
-    double velocity = 0.4D; // TODO Make this a config entry
+  protected void updateDirection(double velocity) {
     double deltaZ = getOldLocation().getBlockZ() - getVehicle().getLocation().getBlockZ();
     double deltaX = getOldLocation().getBlockX() - getVehicle().getLocation().getBlockX();
 
@@ -54,8 +58,6 @@ public class TrainCart {
 
     setVelocity(velVector);
     updateOldLocation();
-
-    return direction;
   }
 
   public Minecart getVehicle() {
@@ -66,8 +68,12 @@ public class TrainCart {
     return trainPosition;
   }
 
-  public byte getDirection() {
+  public short getDirection() {
     return direction;
+  }
+
+  public void setDirection(byte direction) {
+    this.direction = direction;
   }
 
   public boolean isOccupied() {
@@ -102,6 +108,10 @@ public class TrainCart {
 
   public void updateOldLocation() {
     oldLocation = cart.getLocation();
+  }
+
+  public Train getTrain() {
+    return train;
   }
 
 }
