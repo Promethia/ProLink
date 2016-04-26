@@ -7,7 +7,7 @@ import org.bukkit.entity.Minecart;
 
 public class TrainLocomotive extends TrainCart {
 
-  public TrainLocomotive(Train train, Minecart cart, byte direction) {
+  public TrainLocomotive(Train train, Minecart cart, short direction) {
     super(train, cart, 0, direction);
   }
 

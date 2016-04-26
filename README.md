@@ -30,16 +30,21 @@ The following actions are currently available:
    
    *x, y, z (optional)* world coordinates as whole numbers. Only required when command is issued by the server itself. When issued
    by a player or entity, this will have precedence over the entities location
- - **removeall**
- 
-   Removes all active trains. This also removes the minecarts from the world
+ - **destroy [type]**
+ 	 
+ 	 Destroys entities according to given type
+
+ 	 *type* specifies what to destroy, this can be either of all, train. *All* will destroy all known ProLink trains (no exceptions, everything), where *train* will destroy 
+ 	 a train when passing a destruction control sign. The train type is only available for destruction control signs
 
 ### Builds
 
 #### Latest build:
 
-[0.1.1 DEV](http://link.linksoft.io/prolink-latest.jar) - locomotive train control
+[0.2 DEV](http://link.linksoft.io/prolink-latest.jar) - control signs and command system overhaul
 
 #### Previous builds:
+
+[0.1.1 DEV](http://link.linksoft.io/prolink-0.1.1-dev.jar) - locomotive train control
 
 [0.1 DEV](http://link.linksoft.io/prolink-0.1-dev.jar) - initial build

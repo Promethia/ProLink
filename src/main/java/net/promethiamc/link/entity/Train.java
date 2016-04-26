@@ -16,6 +16,7 @@ public class Train {
   public static final byte DIRECTION_E = 0x01;
   public static final byte DIRECTION_S = 0x02;
   public static final byte DIRECTION_W = 0x03;
+  public static final byte DIRECTION_UNKNOWN = 0x04;
 
   private int ID;
   private short direction;
@@ -24,7 +25,7 @@ public class Train {
   private HashMap<Integer, TrainCart> carts = new HashMap<Integer, TrainCart>();
   private TrainLocomotive locomotive;
 
-  public Train(int ID, String name, int carts, Location location, World world, byte direction) {
+  public Train(int ID, String name, int carts, Location location, World world, short direction) {
     this.ID = ID;
     this.direction = direction;
     this.name = name;

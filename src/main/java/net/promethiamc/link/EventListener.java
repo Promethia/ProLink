@@ -4,11 +4,13 @@ import net.promethiamc.link.sign.ControlSign;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.Sign;
 import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockRedstoneEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.vehicle.VehicleCreateEvent;
@@ -50,7 +52,7 @@ public class EventListener implements Listener {
           Block block = event.getBlock().getWorld().getBlockAt(event.getBlock().getX() + x, event.getBlock().getY() + y, event.getBlock().getZ() + z);
 
           if (block.getType().equals(Material.SIGN) || block.getType().equals(Material.WALL_SIGN)) {
-            ControlSign.handleRedstoneAction(block);
+            PromethiaLink.handleSignRedstone(block);
             return;
           }
         }
@@ -60,28 +62,21 @@ public class EventListener implements Listener {
 
   @EventHandler
   public void onSignChange(SignChangeEvent event) {
-    if (!event.getLine(0).equals("[prolink]"))
+    if (!ControlSign.isControlSign(event.getLines()))
       return;
 
-    String lineFirst = event.getLine(1);
-    if (lineFirst.startsWith("spawn")) {
-      String[] line = lineFirst.split(" ");
-
-      if (line.length < 3) {
-        event.getPlayer().sendMessage("Invalid use of the sign spawn command, usage: spawn <carts>");
-        event.getBlock().breakNaturally(); // Since it is an invalid command, destroy the sign
-        return;
-
-      } else if (Integer.parseInt(line[2]) > 12) {
-        event.getPlayer().sendMessage("A train cannot contain more than 12 carts");
-        event.getBlock().breakNaturally(); // Since it is an invalid command, destroy the sign
-        return;
-      }
-
-    } else {
-      event.getPlayer().sendMessage("Unknown Promethia Link sign command, available are: spawn <carts>");
-      event.getBlock().breakNaturally(); // Since it is an invalid command, destroy the sign
+    if (ControlSign.create(event.getLines(), (Sign) event.getBlock().getState(), event.getPlayer()) == null) {
+      event.getBlock().breakNaturally();
+      return;
     }
+  }
+
+  @EventHandler
+  public void onBlockBreak(BlockBreakEvent event) {
+    if (!ControlSign.isControlSign(event.getBlock()))
+      return;
+
+    ControlSign.handleSignDestruction((Sign) event.getBlock().getState());
   }
 
 }
