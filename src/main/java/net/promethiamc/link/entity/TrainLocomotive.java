@@ -19,13 +19,16 @@ public class TrainLocomotive extends TrainCart {
 
       if (cart.getDirection() != direction) {
         cart.updateDirection(!cart.getVehicle().isEmpty() ? 0.4D / 3.0D * 2.25D : 0.2D);
-
-        if (cart.getDirection() != direction)
-          continue;
+        continue;
       }
 
-      double x = (cart.getDirection() == Train.DIRECTION_W ? 1.55D : (cart.getDirection() == Train.DIRECTION_E ? -1.55D : 0.0D)) * cart.getTrainPosition();
-      double z = (cart.getDirection() == Train.DIRECTION_S ? 1.55D : (cart.getDirection() == Train.DIRECTION_N ? -1.55D : 0.0D)) * cart.getTrainPosition();
+      if (cart.isOnSlope()) {
+        cart.updateDirection(!cart.getVehicle().isEmpty() ? 0.4D / 3.0D * 2.0D : 0.2D);
+        continue;
+      }
+
+      double x = (cart.getDirection() == Train.DIRECTION_W ? 1.75D : (cart.getDirection() == Train.DIRECTION_E ? -1.75D : 0.0D)) * cart.getTrainPosition();
+      double z = (cart.getDirection() == Train.DIRECTION_S ? 1.75D : (cart.getDirection() == Train.DIRECTION_N ? -1.75D : 0.0D)) * cart.getTrainPosition();
       double y = cart.getVehicle().getLocation().getY();
 
       x += getVehicle().getLocation().getX();

@@ -1,7 +1,10 @@
 package net.promethiamc.link.entity;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Minecart;
+import org.bukkit.material.Rails;
 import org.bukkit.util.Vector;
 
 public class TrainCart {
@@ -78,6 +81,15 @@ public class TrainCart {
 
   public boolean isOccupied() {
     return occupied;
+  }
+
+  public boolean isOnSlope() {
+    Block block = cart.getWorld().getBlockAt(cart.getLocation());
+
+    if (block.getType().equals(Material.RAILS))
+      return ((Rails) block.getState().getData()).isOnSlope();
+
+    return false;
   }
 
   public Vector getCurrentVelocity() {
