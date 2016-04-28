@@ -18,12 +18,24 @@ public class TrainLocomotive extends TrainCart {
       TrainCart cart = entry.getValue();
 
       if (cart.getDirection() != direction) {
-        cart.updateDirection(!cart.getVehicle().isEmpty() ? 0.4D / 3.0D * 2.25D : 0.2D);
+        cart.updateDirection(!cart.getVehicle().isEmpty() ? 0.4D / 3.0D * 2.25D : 0.4D / 2.0D);
+        continue;
+      }
+
+      int cartX = cart.getVehicle().getLocation().getBlockX();
+      int cartZ = cart.getVehicle().getLocation().getBlockZ();
+
+      if (cart.getDirection() == direction && (direction == Train.DIRECTION_W || direction == Train.DIRECTION_E) && cartZ != this.getVehicle().getLocation().getBlockZ()) {
+        cart.updateDirection(!cart.getVehicle().isEmpty() ? 0.4D / 3.0D * 2.25D : 0.4D / 2.0D);
+        continue;
+
+      } else if (cart.getDirection() == direction && (direction == Train.DIRECTION_N || direction == Train.DIRECTION_S) && cartX != this.getVehicle().getLocation().getBlockX()) {
+        cart.updateDirection(!cart.getVehicle().isEmpty() ? 0.4D / 3.0D * 2.25D : 0.4D / 2.0D);
         continue;
       }
 
       if (cart.isOnSlope()) {
-        cart.updateDirection(!cart.getVehicle().isEmpty() ? 0.4D / 3.0D * 2.0D : 0.2D);
+        cart.updateDirection(!cart.getVehicle().isEmpty() ? 0.4D / 3.0D * 2.0D : 0.4D / 2.0D);
         continue;
       }
 
@@ -44,4 +56,5 @@ public class TrainLocomotive extends TrainCart {
 
     return direction;
   }
+
 }
